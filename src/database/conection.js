@@ -1,12 +1,23 @@
 require('dotenv').config();
 
 const knex = require('knex')({
-  client: 'pg', 
-  connection: process.env.DATABASE_URL,
-  ssl: { rejectUnauthorized: false }, 
+  client: 'pg',
+  connection: {
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+      require: true,
+      rejectUnauthorized: false,
+    },
+  },
+  pool: {
+    min: 0,
+    max: 10,
+    acquireTimeoutMillis: 60000,
+  },
+  debug: true,
 });
-knex
-  .raw('SELECT 1+1 AS result')
+
+knex.raw('SELECT 1+1 AS result')
   .then(() => {
     console.log('Conectado com sucesso ao banco de dados');
   })
