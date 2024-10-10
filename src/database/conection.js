@@ -17,6 +17,7 @@ const knex = require('knex')({
   debug: true,
 });
 
+
 knex.raw('SELECT 1+1 AS result')
   .then(() => {
     console.log('Conectado com sucesso ao banco de dados');
