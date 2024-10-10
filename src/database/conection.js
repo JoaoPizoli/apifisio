@@ -1,13 +1,17 @@
-require('dotenv').config()
-const knex = require('knex')({
-    client:'mysql2',
-    connection:{
-        host: process.env.DB_HOST,
-        port: 3306,
-        user: process.env.DB_USER,
-        password: process.env.DB_PASSWORD,
-        database: process.env.DB_NAME
-    }
-})
+require('dotenv').config();
 
-module.exports = knex
+const knex = require('knex')({
+  client: 'pg', 
+  connection: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false }, 
+});
+knex
+  .raw('SELECT 1+1 AS result')
+  .then(() => {
+    console.log('Conectado com sucesso ao banco de dados');
+  })
+  .catch((err) => {
+    console.error('Erro ao conectar com o banco de dados:', err);
+  });
+
+module.exports = knex;
